@@ -604,6 +604,11 @@ prepare_directory_and_data() {
   chmod -R 775 $ROOT_DIR/volumes
   echo "   📁 Directory $ROOT_DIR/volumes has been created and permissions set to 775."
 
+  # Copy sync_user_supabase2pg.py to ROOT_DIR for container access
+  cp -n sync_user_supabase2pg.py $ROOT_DIR
+  chmod 644 "$ROOT_DIR/sync_user_supabase2pg.py"
+  echo "   📝 sync_user_supabase2pg.py copied to $ROOT_DIR"
+
   # Create nexent user workspace directory
   NEXENT_USER_DIR="$HOME/nexent"
   create_dir_with_permission "$NEXENT_USER_DIR" 775
