@@ -483,9 +483,10 @@ class TestCheckAuthServiceHealth(unittest.IsolatedAsyncioTestCase):
     @patch('backend.services.user_management_service.aiohttp.ClientSession')
     async def test_health_check_general_exception(self, mock_session_cls):
         """Test health check with general exception"""
-        mock_session_cls.side_effect = Exception("General error")
+        mock_session_cls.side_effect = Exception(
+            "General Function should raise the error")
 
-        # Function should raise the original exception
+        # original exception
         with self.assertRaises(Exception) as context:
             await check_auth_service_health()
 
@@ -1194,7 +1195,8 @@ class TestGetUserInfo(unittest.IsolatedAsyncioTestCase):
         # Setup mocks
         mock_get_user_tenant.return_value = {
             "tenant_id": "test_tenant",
-            "user_role": "ADMIN"
+            "user_role": "ADMIN",
+            "user_email": "test@example.com"
         }
         mock_query_group_ids.return_value = [1, 2, 3]
 
@@ -1229,6 +1231,7 @@ class TestGetUserInfo(unittest.IsolatedAsyncioTestCase):
         assert result["user"]["user_id"] == "test_user"
         assert result["user"]["group_ids"] == [1, 2, 3]
         assert result["user"]["tenant_id"] == "test_tenant"
+        assert result["user"]["user_email"] == "test@example.com"
         assert result["user"]["user_role"] == "ADMIN"
         assert result["user"]["permissions"] == ["agent:create"]
         assert result["user"]["accessibleRoutes"] == ["chat"]
